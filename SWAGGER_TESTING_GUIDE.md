@@ -52,25 +52,25 @@ Swagger UI will open automatically at the root URL.
 ### Interface Components
 
 ```
-???????????????????????????????????????????????????????
-?  Support Assignment System API                      ?
-?  API for managing support chat sessions             ?
-???????????????????????????????????????????????????????
-?  Schemas ?                                          ?
-?                                                     ?
-?  ?? ChatSession                                    ?
-?  ?   POST   /api/chatsession                       ? ?? Create new chat
-?  ?   GET    /api/chatsession/{sessionId}           ? ?? Get session status
-?  ?   POST   /api/chatsession/{sessionId}/poll      ? ?? Keep session alive
-?  ?   POST   /api/chatsession/{sessionId}/complete  ? ?? Complete chat
-?  ?                                                  ?
-?  ?? SystemStatus                                   ?
-?  ?   GET    /api/systemstatus/teams                ? ?? View team status
-?  ?   GET    /api/systemstatus/queue                ? ?? View queue status
-?  ?                                                  ?
-?  ?? Diagnostics                                    ?
-?  ?   POST   /api/diagnostics/assign/{sessionId}    ? ?? Manual assignment
-???????????????????????????????????????????????????????
++-------------------------------------------------------+
+|  Support Assignment System API                      |
+|  API for managing support chat sessions             |
++-------------------------------------------------------+
+|  Schemas                                            |
+|                                                     |
+|  +- ChatSession                                     |
+|  |   POST   /api/chatsession                        +-- Create new chat
+|  |   GET    /api/chatsession/{sessionId}            +-- Get session status
+|  |   POST   /api/chatsession/{sessionId}/poll       +-- Keep session alive
+|  |   POST   /api/chatsession/{sessionId}/complete   +-- Complete chat
+|  |                                                  |
+|  +- SystemStatus                                    |
+|  |   GET    /api/systemstatus/teams                 +-- View team status
+|  |   GET    /api/systemstatus/queue                 +-- View queue status
+|  |                                                  |
+|  +- Diagnostics                                     |
+|  |   POST   /api/diagnostics/assign/{sessionId}     +-- Manual assignment
++-------------------------------------------------------+
 ```
 
 ### Using Swagger UI
