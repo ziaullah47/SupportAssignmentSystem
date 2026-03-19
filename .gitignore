@@ -2,17 +2,7 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
+# Ignore the following folders for C# projects
 src/**/bin/**
-src/**/obj/
+src/**/obj/**
 .vs
-/src/SupportAssignmentSystem.Core/obj/Debug/net9.0/ref/SupportAssignmentSystem.Core.dll
-/src/SupportAssignmentSystem.Core/obj/Debug/net9.0/refint/SupportAssignmentSystem.Core.dll
-/src/SupportAssignmentSystem.Core/obj/Debug/net9.0/SupportAssignmentSystem.Core.AssemblyInfo.cs
-/src/SupportAssignmentSystem.Core/obj/Debug/net9.0/SupportAssignmentSystem.Core.AssemblyInfoInputs.cache
-/src/SupportAssignmentSystem.Core/obj/Debug/net9.0/SupportAssignmentSystem.Core.assets.cache
-/src/SupportAssignmentSystem.Core/obj/Debug/net9.0/SupportAssignmentSystem.Core.csproj.CoreCompileInputs.cache
-/src/SupportAssignmentSystem.Core/obj/Debug/net9.0/SupportAssignmentSystem.Core.csproj.FileListAbsolute.txt
-/src/SupportAssignmentSystem.Core/obj/Debug/net9.0/SupportAssignmentSystem.Core.dll
-/src/SupportAssignmentSystem.Core/obj/Debug/net9.0/SupportAssignmentSystem.Core.GeneratedMSBuildEditorConfig.editorconfig
-/src/SupportAssignmentSystem.Core/obj/Debug/net9.0/SupportAssignmentSystem.Core.pdb
-/src/SupportAssignmentSystem.Core/obj/Debug/net9.0/refint/SupportAssignmentSystem.Core.dll
