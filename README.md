@@ -312,10 +312,10 @@ ChatSessions Table:
 
 | Criteria | InMemory | Redis | Database |
 |----------|----------|-------|----------|
-| **Performance** | ????? | ????? | ??? |
-| **Scalability** | ? | ????? | ???? |
-| **Persistence** | ? | ???? | ????? |
-| **Setup Complexity** | ????? | ??? | ?? |
+| **Performance** | ★★★★★ | ★★★★★ | ★★★ |
+| **Scalability** | ★ | ★★★★★ | ★★★★ |
+| **Persistence** | ★ | ★★★★ | ★★★★★ |
+| **Setup Complexity** | ★★★★★ | ★★★ | ★★ |
 | **Cost** | Free | $ | $$ |
 
 ---
