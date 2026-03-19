@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "src\\SupportAssignmentSystem.Api\\SupportAssignmentSystem.Api.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "src\\SupportAssignmentSystem.PollingMonitor\\SupportAssignmentSystem.PollingMonitor.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

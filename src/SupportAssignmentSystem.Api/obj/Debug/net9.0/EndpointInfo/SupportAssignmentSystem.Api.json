@@ -1,0 +1,366 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Support Assignment System API",
+    "description": "API for managing support chat sessions with automatic agent assignment, queue management, and overflow handling. Supports InMemory, Redis, and Database storage.",
+    "contact": {
+      "name": "Support Assignment System",
+      "email": "support@example.com"
+    },
+    "version": "v1"
+  },
+  "paths": {
+    "/api/ChatSession": {
+      "post": {
+        "tags": [
+          "ChatSession"
+        ],
+        "summary": "Creates a new chat session and adds it to the queue",
+        "requestBody": {
+          "description": "The user information to create a chat session",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateChatSessionRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateChatSessionRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateChatSessionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Chat session created and queued successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatSessionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request - UserId is required",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
+          },
+          "503": {
+            "description": "Chat session refused - all queues are full",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatSessionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ChatSession/{sessionId}": {
+      "get": {
+        "tags": [
+          "ChatSession"
+        ],
+        "summary": "Retrieves the current status of a chat session",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "description": "The unique identifier of the chat session",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Chat session found and returned successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatSessionResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Chat session not found",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ChatSession/{sessionId}/poll": {
+      "post": {
+        "tags": [
+          "ChatSession"
+        ],
+        "summary": "Polls a chat session to keep it active (should be called every 1 second)",
+        "description": "The client must poll this endpoint every 1 second to keep the session active.\r\nIf 3 consecutive polls are missed, the session will be marked as inactive.",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "description": "The unique identifier of the chat session",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Poll successful - session is active",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PollResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Chat session not found",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ChatSession/{sessionId}/complete": {
+      "post": {
+        "tags": [
+          "ChatSession"
+        ],
+        "summary": "Completes a chat session and releases the assigned agent",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "description": "The unique identifier of the chat session",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Chat session completed successfully",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
+          },
+          "404": {
+            "description": "Chat session not found",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Diagnostics/assign/{sessionId}": {
+      "post": {
+        "tags": [
+          "Diagnostics"
+        ],
+        "summary": "Manually triggers assignment for a specific session (for debugging)",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Diagnostics/session/{sessionId}": {
+      "get": {
+        "tags": [
+          "Diagnostics"
+        ],
+        "summary": "Gets diagnostic information about why a session might not be assigned",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/SystemStatus/teams": {
+      "get": {
+        "tags": [
+          "SystemStatus"
+        ],
+        "summary": "Gets the current status of all teams and their agents",
+        "responses": {
+          "200": {
+            "description": "Team status retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/SystemStatus/queue": {
+      "get": {
+        "tags": [
+          "SystemStatus"
+        ],
+        "summary": "Gets the current status of all queued chat sessions",
+        "responses": {
+          "200": {
+            "description": "Queue status retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/SystemStatus/health": {
+      "get": {
+        "tags": [
+          "SystemStatus"
+        ],
+        "summary": "Health check endpoint to verify the API is running",
+        "responses": {
+          "200": {
+            "description": "Service is healthy",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ChatSessionResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier of the chat session",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "description": "Current status of the chat session (Queued, Assigned, Active, Inactive, Completed, Refused)",
+            "nullable": true
+          },
+          "assignedAgentId": {
+            "type": "string",
+            "description": "The ID of the agent assigned to this session (null if not yet assigned)",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "The timestamp when the session was created",
+            "format": "date-time"
+          },
+          "assignedAt": {
+            "type": "string",
+            "description": "The timestamp when an agent was assigned (null if not yet assigned)",
+            "format": "date-time",
+            "nullable": true
+          },
+          "isOverflow": {
+            "type": "boolean",
+            "description": "Indicates if this session is in the overflow queue"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Response model containing chat session information"
+      },
+      "CreateChatSessionRequest": {
+        "required": [
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "userId": {
+            "minLength": 1,
+            "type": "string",
+            "description": "The unique identifier of the user requesting support",
+            "example": "user123"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Request model for creating a new chat session"
+      },
+      "PollResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indicates if the poll was successful"
+          },
+          "status": {
+            "type": "string",
+            "description": "Current status of the chat session",
+            "nullable": true
+          },
+          "assignedAgentId": {
+            "type": "string",
+            "description": "The ID of the assigned agent (null if not yet assigned)",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Response model for chat session polling"
+      }
+    }
+  }
+}
