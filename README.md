@@ -170,7 +170,7 @@ public class Team
 
 **Capacity Calculations**:
 - **Team Capacity**: Sum of all active agents' max concurrent chats
-- **Max Queue Length**: Team Capacity × 1.5
+- **Max Queue Length**: Team Capacity Ã— 1.5
 
 ### 3. ChatSession Entity
 Represents a customer chat session with lifecycle tracking.
